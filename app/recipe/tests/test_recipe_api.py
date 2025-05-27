@@ -17,6 +17,7 @@ from recipe.serializers import (
     RecipeDetailSerializer,
 )
 
+
 RECIPES_URL = reverse('recipe:recipe-list')
 
 
@@ -25,25 +26,25 @@ def detail_url(recipe_id):
     """Create and return a recipe detail URL."""
     return reverse('recipe:recipe-detail', args=[recipe_id])
 
-def create_recipe(user,  **params):
-    """Create and return a recipe"""
+def create_recipe(user, **params):
+    """Create and return a sample recipe."""
     defaults = {
-        'title':'Sample recipe title',
-        'time_minutes':22,
+        'title': 'Sample recipe title',
+        'time_minutes': 22,
         'price': Decimal('5.25'),
-        'description':'Sample description',
+        'description': 'Sample description',
         'link': 'http://example.com/recipe.pdf',
     }
     defaults.update(params)
+
     recipe = Recipe.objects.create(user=user, **defaults)
     return recipe
-
-
 
 
 def create_user(**params):
     """Create and return a new user"""
     return get_user_model().objects.create_user(**params)
+
 
 class PublicRecipeAPITests(TestCase):
     """Test unauthenticated API requests."""
@@ -65,7 +66,7 @@ class PrivateRecipeApiTests(TestCase):
         self.client.force_authenticate(self.user)
 
     def test_retrieve_recipes(self):
-        """Test retrieving a list of recipes"""
+        """Test retrieving a list of recipes."""
         create_recipe(user=self.user)
         create_recipe(user=self.user)
         res = self.client.get(RECIPES_URL)
@@ -98,7 +99,7 @@ class PrivateRecipeApiTests(TestCase):
         self.assertEqual(res.data, serializer.data)
 
 
-    def test_creating_a_recipe(self):
+    def test_create_a_recipe(self):
         """Test creating a recipe."""
         payload = {
             'title': 'Sample recipe',
@@ -141,7 +142,7 @@ class PrivateRecipeApiTests(TestCase):
 
         payload = {
             'title': 'New recipe title',
-            'link': 'https://example.com/new_recipe.pdf',
+            'link': 'https://example.com/new-recipe.pdf',
             'description': 'New recipe description',
             'time_minutes': 10,
             'price': Decimal('2.50'),
@@ -179,7 +180,7 @@ class PrivateRecipeApiTests(TestCase):
         self.assertFalse(Recipe.objects.filter(id=recipe.id).exists())
 
 
-    def test_delete_other_users_error(self):
+    def test_delete_other_users_recipe_error(self):
         """Test trying to delete another users recipe gives error."""
         new_user = create_user(email='users2@example.com', password='test123')
         recipe = create_recipe(user=new_user)

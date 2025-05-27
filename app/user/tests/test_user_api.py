@@ -17,8 +17,8 @@ def create_user(**params):
     """Create and return a new user"""
     return get_user_model().objects.create_user(**params)
 
-class PublicUserApiTest(TestCase):
-    """Test the public features of the user API"""
+class PublicUserApiTests(TestCase):
+    """Test the public features of the user API."""
 
     def setUp(self):
         self.client = APIClient()
@@ -26,11 +26,11 @@ class PublicUserApiTest(TestCase):
 
 
     def test_create_user_success(self):
-        "Test creating a user is succesful"
+        "Test creating a user is succesful."
         payload = {
-            'email':'test@example.com',
-            'password':'testpass123',
-            'name':'Test Name',
+            'email': 'test@example.com',
+            'password': 'testpass123',
+            'name': 'Test Name',
         }
         res = self.client.post(CREATE_USER_URL, payload)
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
@@ -55,9 +55,9 @@ class PublicUserApiTest(TestCase):
     def test_password_too_short_error(self):
         """Test an error is returned if password less than 5 chars"""
         payload = {
-            'email':'test@example.com',
-            'password':'pw',
-            'name':'Test name',
+            'email': 'test@example.com',
+            'password': 'pw',
+            'name': 'Test name',
         }
         res = self.client.post(CREATE_USER_URL, payload)
 
@@ -122,10 +122,10 @@ class PrivateUserApiTests(TestCase):
     """Test API requests that require authentication"""
 
     def setUp(self):
-        self.user = create_user(
-            email = 'test@example.com',
-            password = 'testpass123',
-            name = 'Test name',
+        self.user= create_user(
+            email='test@example.com',
+            password='testpass123',
+            name='Test Name',
         )
         self.client = APIClient()
         self.client.force_authenticate(user=self.user)
