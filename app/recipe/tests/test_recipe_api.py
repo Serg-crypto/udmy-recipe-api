@@ -99,7 +99,7 @@ class PrivateRecipeApiTests(TestCase):
         self.assertEqual(res.data, serializer.data)
 
 
-    def test_create_a_recipe(self):
+    def test_create_recipe(self):
         """Test creating a recipe."""
         payload = {
             'title': 'Sample recipe',
